@@ -46,3 +46,11 @@ Before running this project, ensure you have the following software installed:
     -   **Customer Service**: `http://localhost:9091`
     -   **Order Service**: `http://localhost:9092`
     -   **Product Service**: `http://localhost:9093`
+
+## Swagger UI
+
+Each microservice now includes Swagger UI for API documentation. You can access them at the following endpoints:
+
+-   **Customer Service**: `http://localhost:9091/swagger-ui.html`
+-   **Order Service**: `http://localhost:9092/swagger-ui.html`
+-   **Product Service**: `http://localhost:9093/swagger-ui.html`
