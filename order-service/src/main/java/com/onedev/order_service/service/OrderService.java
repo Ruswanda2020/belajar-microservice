@@ -11,6 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +25,25 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final RestTemplate restTemplate;
 
     public void createOrder(OrderRequest orderRequest) {
+        // Call Customer Service to validate customerId
+        ResponseEntity<Void> customerResponse = restTemplate.getForEntity(
+                "http://CUSTOMER-SERVICE/api/customer/" + orderRequest.getCustomerId(), Void.class);
+
+        if (customerResponse.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException("Customer not found with ID: " + orderRequest.getCustomerId());
+        }
+
+        // Call Product Service to validate productId
+        ResponseEntity<Void> productResponse = restTemplate.getForEntity(
+                "http://PRODUCT-SERVICE/api/product/" + orderRequest.getProductId(), Void.class);
+
+        if (productResponse.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException("Product not found with ID: " + orderRequest.getProductId());
+        }
+
         Order order = Order.builder()
                 .customerId(orderRequest.getCustomerId())
                 .productId(orderRequest.getProductId())

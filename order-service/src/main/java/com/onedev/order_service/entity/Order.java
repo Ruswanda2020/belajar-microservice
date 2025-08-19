@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", schema = "order_service")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
